@@ -1,0 +1,33 @@
+# Homework 6 Problem 2
+# Jordan Adams
+
+from random import random
+from math import sqrt,exp
+
+# Imports required math functions
+
+def f(x):
+    return 1/(sqrt(x)*(exp(x)+1))
+    
+# User defined function that handles the inside of the first Integral
+
+def p(x):
+    return 1/((sqrt(x)))
+
+# User defined function that handles the probability distribution
+
+N=1000000
+
+# Number of random points
+
+sum=0
+
+# Provides starting point
+
+for k in range(N):
+    x=(random())**2
+    sum+=f(x)/p(x)
+
+# This for block allows for random sampling
+
+print("The integral is ~ {}".format(2*sum/N))
