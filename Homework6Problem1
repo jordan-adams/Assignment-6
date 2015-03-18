@@ -1,0 +1,143 @@
+# Homework 6 Problem 1
+# Jordan Adams
+
+from numpy import arange
+from pylab import plot,show,legend,xlabel,ylabel
+from random import random
+
+# Imports required math and graph functions
+
+Bi_213i=10000
+
+# Initial number of Bi-213 atoms
+
+Bi_209i=0
+
+# Initial number of Bi-209 atoms
+
+Tl_209i=0
+
+# Initial number of Tl-209 atoms
+
+Pb_209i=0
+
+# Initial number of Pb-209 atoms
+
+t2_Pb=3.3*60
+
+# Half-Life of Pb-209
+
+t2_Bi=46*60
+
+# Half-Life of Bi-213
+
+t2_Tl=2.2*60
+
+d=1
+
+# Step size (in seconds)
+
+t_total=20000
+
+# Total time (in seconds)
+
+prob_Bi=1-2**(-d/t2_Bi)
+prob_Pb=1-2**(-d/t2_Pb)
+prob_Tl=1-2**(-d/t2_Tl)
+
+# Probabilities of decay for Bi-213, Pb-209, and Tl-209 respectively
+
+Bi_p1=[]
+Bi_p2=[]
+Pb_p=[]
+Tl_p=[]
+
+# Empty lists to be appended to later
+
+t_p=arange(0,t_total,d)
+
+# Time interval of concern in one second steps
+
+for t in t_p:
+    Bi_p1.append(Bi_213i)
+    Bi_p2.append(Bi_209i)
+    Pb_p.append(Pb_209i)
+    Tl_p.append(Tl_209i)
+    
+    # Appends number of atoms to their appropriate lists
+    
+    Pb_decay=0
+    
+    # Initial number of decayed Pb atoms
+    
+    for k in range(Pb_209i):
+        if random()<prob_Pb:
+            Pb_decay+=1
+            # Determines the number of Pb-209 atoms that decay
+    Pb_209i-=Pb_decay
+    # Subtracts decayed atoms from remaining
+    Bi_209i+=Pb_decay
+    # Adds decayed atoms to number of Bi-209 atoms
+    Tl_decay=0
+    
+    for l in range(Tl_209i):
+        if random()<prob_Tl:
+            Tl_decay+=1
+            # Determines the number of Tl-209 atoms that decay
+    Tl_209i-=Tl_decay
+    
+    # Subtracts decayed atoms from remaining
+
+    Pb_209i+=Tl_decay
+
+    # Adds decayed atoms to number of Pb-209 atoms
+
+    Bi_decay_path1=0
+
+    # Amount of atoms that decay to Pb-209
+
+    Bi_decay_path2=0
+
+    # Amount of atoms that decay to Tl-209
+    
+    for m in range(Bi_213i):
+        if random()<prob_Bi:
+            # Probability that Bi-213 decays
+            if random()-.9791<1.0e-9:
+                Bi_decay_path1+=1
+            else:
+                Bi_decay_path2+=1
+            # This if/else block sorts the atoms that decay to their respective path
+    
+    Bi_213i-=Bi_decay_path1
+    Bi_213i-=Bi_decay_path2
+
+    # Subtracts the atoms that decay to either path from the initial number of atoms
+    
+    Pb_209i+=Bi_decay_path1
+    
+    # Atoms that decay to Pb
+    
+    Tl_209i+=Bi_decay_path2
+    
+    #atoms that decay to Tl
+
+plot(t_p,Bi_p1,label="Bi-213")
+plot(t_p,Bi_p2,label="Bi-209")
+plot(t_p,Pb_p,label="Pb-209")
+plot(t_p,Tl_p,label="Tl-209")
+
+# Plots each of the respective atoms over the time interval
+
+legend()
+
+# Creates legend
+
+xlabel("Time (in seconds)")
+ylabel("Number of atoms")
+
+# Appropriately labels the axes of the graph
+
+show()
+
+# Displays the graph
